@@ -150,6 +150,15 @@ img {
     display: block;
 }
 
+.them-moi-btn {
+    margin: auto;
+}
+
+.fa-plus-circle {
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
 /* Footer */
 footer {
     padding: 10px 20px;
