@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="sanPham.js"></script>
+    <script src="gioHang.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        input {
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .gio-hang {
+            border: 1px solid #ddd;
+            box-shadow: 2px 2px 4px #ddd;
+            margin: auto;
+            padding: 20px;
+            max-width: 1100px;
+            margin-top: 20px;
+        }
+
+        .item-gio-hang {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            padding: 20px;
+        }
+
+        .item-gio-hang:last-child {
+            border-bottom: none;
+        }
+
+        .item-gio-hang .hinh-anh img{
+            width: 60px;
+            height: 60px;
+        }
+
+        .item-gio-hang .hinh-anh, 
+        .so-luong,
+        .tong-tien, 
+        .hanh-dong {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .item-gio-hang .gia {
+            flex: 2;
+        }
+
+        .item-gio-hang .gia .gia-goc {
+            font-size: 12px;
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .item-gio-hang .gia .gia-ban {
+            color: #F7452E;
+        }
+
+
+        .item-gio-hang .ten {
+            flex: 3;
+        }
+
+        .item-gio-hang input {
+            width: 100%;
+        }
+
+        .item-gio-hang .hanh-dong:hover {
+            color: #F7452E;
+        }
+
+        footer {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav id="nav-bar">
+        <ul class="menu-level-1">
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Quần Áo</a>
+                <ul class="menu-level-2">
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Quần Áo Nam</a>
+                    </li>
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Quần Áo Nữ</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Phụ Kiện</a>
+            </li>
+
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Đồ Điện Tử</a>
+                <ul class="menu-level-2">
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Điện Thoại</a>
+                    </li>
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Giao Diện</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="item-level-1">
+                <i class="item-cart fas fa-cart-arrow-down"></i>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="gio-hang">
+        <h1>Danh Sách Sản Phẩm</h1>
+        <!-- Tiêu đề item giỏ hàng -->
+        <div class="item-gio-hang">
+            <div class="hinh-anh">Hình Ảnh</div>
+            <p class="ten">Sản Phẩm</p>
+            <div class="gia">Đơn Giá</div>
+            <p class="so-luong">Số Lượng</p>
+            <p class="tong-tien">Tổng Tiền</p>
+            <div class="hanh-dong">
+                <p>Thao Tác</p>
+            </div>
+        </div>
+
+        <!-- Danh sách item giỏ hàng -->
+    </div>
+
+    <footer>
+        Học Local Storage.
+    </footer>
+
+    <script>
+        hienThiDanhSachItemGioHang();
+
+
+        function hienThiDanhSachItemGioHang() {
+            // Bước 1: Lấy danh sách giỏ hàng trong local storage
+            var danhSachItemGioHang = layDanhSachItemGioHang();
+            // Bước 2: chuyển danh sách item giỏ hàng sang htmlTong
+            var HTML = chuyenDanhSachItemGioHangSangHTML(danhSachItemGioHang);
+            // Bước 3: Truy cập node giỏ hàng để hiện thị HTML giỏ hàng lên
+            var nodeGioHang = document.querySelector('.gio-hang');
+            nodeGioHang.innerHTML += HTML;
+        }
+
+
+        // Chuyển danh sách giỏ hàng thành html
+        function chuyenDanhSachItemGioHangSangHTML(danhSachItemGioHang) {
+            var htmlTong = '';
+            for(var i = 0; i < danhSachItemGioHang.length; i++) {
+                htmlTong += chuyenDoiTuongItemGioHangSangHTML(danhSachItemGioHang[i]);
+            }
+
+            return htmlTong;
+        }
+
+        // Chuyển 1 sản phẩm thêm vào giỏ hàng bằng html
+        function chuyenDoiTuongItemGioHangSangHTML(itemGioHang) {
+            var sanPham = laySanPhamTheoId(itemGioHang.idSanPham);
+            var tongTien = itemGioHang.soLuong * sanPham.tinhGiaBan();
+
+            var html = '<div class="item-gio-hang">\n'+
+            '            <div class="hinh-anh">\n'+
+            '                <img src="' + sanPham.hinhAnh + '" alt="">\n'+
+            '            </div>\n'+
+            '            <p class="ten">' + sanPham.ten+ '</p>\n'+
+            '            <div class="gia">\n'+
+            '                <span class="gia-goc">' + sanPham.giaGoc + 'VNĐ</span>\n'+
+            '                <span class="gia-ban">' + sanPham.tinhGiaBan() + 'VNĐ</span>\n'+
+            '            </div>\n'+
+            '            <input type="number" class="so-luong" value="' + itemGioHang.soLuong +'">\n'+
+            '            <p class="tong-tien">' + tongTien +'</p>\n'+
+            '            <div class="hanh-dong far fa-trash-alt"></div>\n'+
+            '        </div>';
+
+            return html;
+        }
+    </script>
+</body>
+</html>

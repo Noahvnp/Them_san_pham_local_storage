@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="sanPham.js"></script>
+    <script src="gioHang.js"></script>
+
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav id="nav-bar">
+        <ul class="menu-level-1">
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Quần Áo</a>
+                <ul class="menu-level-2">
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Quần Áo Nam</a>
+                    </li>
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Quần Áo Nữ</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Phụ Kiện</a>
+            </li>
+
+            <li class="item-level-1">
+                <a href="#" class="item-level-1-title">Đồ Điện Tử</a>
+                <ul class="menu-level-2">
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Điện Thoại</a>
+                    </li>
+                    <li class="item-level-2">
+                        <a href="#" class="item-level-2-title">Giao Diện</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="item-level-1">
+                <i class="item-cart fas fa-cart-arrow-down"></i>
+            </li>
+        </ul>
+    </nav>
+    <!-- Slider -->
+    <section id="slider">
+        <img src="https://cdn.tgdd.vn/2021/12/banner/800-200-800x200-120.png" alt="">
+    </section>
+
+    <section id="products">
+        <!-- Hiển thị danh sách sản phẩm -->      
+    </section>
+
+    <footer>
+        Học Local Storage.
+    </footer>
+
+    <script>
+        // Bước 1: Lấy danh sách sản phẩm ở local storage
+        var jsonDanhSachSanPham = localStorage.getItem('danhSachSanPham');
+        var danhSachSanPham = taoDoiTuongSanPham().fromJSONs(jsonDanhSachSanPham);
+        
+        // Bước 2: Chuyển danh sách đối tượng sang HTML storage
+        var HTML = chuyenDanhSachDoiTuongSanPhamThanhHTML(danhSachSanPham);
+
+        // Bước 3: Gắn đoạn HTML vào section products
+        var nodeProducts = document.getElementById('products');
+        nodeProducts.innerHTML = HTML;
+
+
+        function onclickDuaVaoGioHang(idSanPham) {
+            alert('Thêm sản phẩm thành công! ID: ' + idSanPham);
+            
+            // Chỉ cần lưu trữ 2 trường dữ liệu:
+                // 1. Id
+                // 2. Quantity
+
+            // Xây dựng hàm tạo nhanh đối tượng item giỏ hàng 
+                //  ==> gioHang.js
+
+            // Lấy danh sách giỏ hàng có trong local storage ra
+            var danhSachItemGioHang = layDanhSachItemGioHang();
+            var coTonTaiTrongDanhSachItemGioHang = false;
+            for(var i = 0; i < danhSachItemGioHang.length; i++) {
+                var itemGioHangHienTai = danhSachItemGioHang[i];
+                // Nếu tồn tại sản phẩm thì tăng số lượng
+                if(itemGioHangHienTai.idSanPham === idSanPham) {
+                    danhSachItemGioHang[i].soLuong++;
+                    coTonTaiTrongDanhSachItemGioHang = true;
+                }
+            }
+            
+            // Nếu sản phẩm chưa tồn tại trong giỏ hàng thì thêm mới 1 item giỏ hàng, quantity = 1;
+            if(coTonTaiTrongDanhSachItemGioHang == false) {
+                var itemGioHang = taoDoiTuongItemGioHang(idSanPham, 1);
+                danhSachItemGioHang.push(itemGioHang);
+            }
+
+            // Lưu trữ lại vào local storage
+            luuDanhSachItemGioHangVaoLocalStorage(danhSachItemGioHang);
+        }
+    </script>
+</body>
+</html>
